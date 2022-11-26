@@ -12,10 +12,12 @@ const alchemy = new Alchemy(config);
 const Data = () => {
   const [tokenBalance, setTokenBalance] = useState([]);
 
+  // sorting function
   const sortByHighestBalance = (a, b) => {
     return b.balance - a.balance;
   };
 
+  // fetch data 
   const fetchTokens = async () => {
     const response = await fetch(
       " https://gateway.ipfs.io/ipns/tokens.uniswap.org"
@@ -27,6 +29,8 @@ const Data = () => {
     const ownerAddress = "0x00000000219ab540356cbb839cbe05303d7705fa";
 
     tokens.map((token) => {
+
+      // pushing data in new arr if chain === ethereum
       if (token.chainId === 1) {
         tokensArray.push({
           address: token.address,
@@ -37,6 +41,7 @@ const Data = () => {
       }
     });
 
+    // alchemy api to get balance
     const data = await alchemy.core.getTokenBalances(
       ownerAddress,
       tokensArray.map((token) => token.address)
@@ -48,17 +53,16 @@ const Data = () => {
       // console.log("balance: ", balance, "decimals", decimals);
       tokensArray[index].balance = balance / 10 ** decimals;
     });
-    setTokenBalance(tokensArray);
-    console.log(tokensArray);
 
-    console.log(tokensArray.sort(sortByHighestBalance));
+    // sorting array in descending (highest balance first)
+    tokensArray.sort(sortByHighestBalance);
+    setTokenBalance(tokensArray);
   };
 
   useEffect(() => {
     fetchTokens();
   }, []);
 
-  console.log(tokenBalance);
 
   return <div>Data</div>;
 };
