@@ -16,7 +16,6 @@ const alchemy = new Alchemy(config);
 const WalletContextProvider = ({ children }) => {
   const [tokenBalance, setTokenBalance] = useState([]);
   const [currentAccount, setCurrentAccount] = useState("");
-  //   const { currentAccount } = useContext(WalletContext);
 
   // sorting function
   const sortByHighestBalance = (a, b) => {
@@ -56,7 +55,6 @@ const WalletContextProvider = ({ children }) => {
     data.tokenBalances.map((token, index) => {
       const balance = parseInt(token.tokenBalance);
       const decimals = tokensArray[index].decimals;
-      //   console.log("balance: ", balance, "decimals", decimals);
       tokensArray[index].balance = balance / 10 ** decimals;
     });
 
@@ -83,26 +81,10 @@ const WalletContextProvider = ({ children }) => {
     }
   };
 
-  // // check if Wallet is Connected!
-  // const checkIfWalletIsConnected = async () => {
-  //   try {
-  //     if (!ethereum) {
-  //       return alert("Please install Metamask!");
-  //     }
-  //     const accounts = await ethereum.request({ method: "eth_accounts" });
-  //     if (accounts.length) {
-  //       setCurrentAccount(accounts[0]);
-  //     } else {
-  //       console.log("No Accounts found!");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     throw new Error("No ethereum object found!");
-  //   }
-  // };
-
   useEffect(() => {
-    fetchTokens();
+    if (currentAccount) {
+      fetchTokens();
+    }
   }, [currentAccount]);
 
   return (
