@@ -28,7 +28,7 @@ const TokenList = () => {
   };
 
   return (
-    <section className="relative">
+    <section className="relative w-full">
       <div className="w-[55%] mx-auto bg-gray-200 py-6 rounded-md absolute left-[50%] translate-x-[-50%]  -top-24">
         <div className="flex gap-80 px-20  text-xl font-Grotesk font-semibold mb-3 text-[#1e1e1e]">
           <h2>Name</h2>

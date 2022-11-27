@@ -14,8 +14,8 @@ const config = {
 const alchemy = new Alchemy(config);
 
 const WalletContextProvider = ({ children }) => {
-  const [currentAccount, setCurrentAccount] = useState("");
   const [tokenBalance, setTokenBalance] = useState([]);
+  const [currentAccount, setCurrentAccount] = useState("");
   //   const { currentAccount } = useContext(WalletContext);
 
   // sorting function
@@ -31,9 +31,8 @@ const WalletContextProvider = ({ children }) => {
     const responseData = await response.json();
     const { tokens } = responseData;
     const tokensArray = [];
-    console.log(currentAccount);
     // const ownerAddress = `${currentAccount}`;
-    const ownerAddress = "0x00000000219ab540356cbb839cbe05303d7705fa";
+    const ownerAddress = currentAccount;
 
     tokens.map((token) => {
       // pushing data in new arr if chain === ethereum
@@ -72,39 +71,39 @@ const WalletContextProvider = ({ children }) => {
       if (!ethereum) {
         return alert("Please install Metamask!");
       }
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      setCurrentAccount(accounts[0]);
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      const account = await signer.getAddress();
+
+      setCurrentAccount(account);
     } catch (error) {
       console.error(error.message);
       throw new Error("No ethereum object found!");
     }
   };
 
-  // check if Wallet is Connected!
-  const checkIfWalletIsConnected = async () => {
-    try {
-      if (!ethereum) {
-        return alert("Please install Metamask!");
-      }
-      const accounts = await ethereum.request({ method: "eth_accounts" });
-      if (accounts.length) {
-        setCurrentAccount(accounts[0]);
-      } else {
-        console.log("No Accounts found!");
-      }
-    } catch (error) {
-      console.log(error);
-      throw new Error("No ethereum object found!");
-    }
-  };
+  // // check if Wallet is Connected!
+  // const checkIfWalletIsConnected = async () => {
+  //   try {
+  //     if (!ethereum) {
+  //       return alert("Please install Metamask!");
+  //     }
+  //     const accounts = await ethereum.request({ method: "eth_accounts" });
+  //     if (accounts.length) {
+  //       setCurrentAccount(accounts[0]);
+  //     } else {
+  //       console.log("No Accounts found!");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw new Error("No ethereum object found!");
+  //   }
+  // };
 
   useEffect(() => {
-    // checkIfWalletIsConnected();
     fetchTokens();
-    // console.log(currentAccount);
-  }, []);
+  }, [currentAccount]);
 
   return (
     <WalletContext.Provider

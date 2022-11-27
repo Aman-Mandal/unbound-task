@@ -1,4 +1,3 @@
-import Data from "./components/Data";
 import Header from "./components/Header/Header";
 import TokenList from "./components/TokenList/TokenList";
 
