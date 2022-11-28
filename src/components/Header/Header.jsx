@@ -4,7 +4,7 @@ import headerImg from "../../assets/header.svg";
 import { WalletContext } from "../../context/Context";
 
 const Header = () => {
-  const { connectWallet } = useContext(WalletContext);
+  const { connectWallet, currentAccount } = useContext(WalletContext);
 
   return (
     <header className="bg-[#1E1E1E] h-[150vh]">
@@ -21,12 +21,26 @@ const Header = () => {
             crypto token on Ethereum Mainnet.
           </p>
 
-          <button
-            onClick={connectWallet}
-            className="w-[15rem] text-xl font-semibold bg-gradient-to-r text-transparent bg-clip-text from-[#FD42FB] via-[#CD9ECD] to-[#753FF3]  mt-14 bg-inherit border-gray-400 py-3 rounded-md border hover:scale-105 transition-all ease-in-out"
-          >
-            Connect Wallet
-          </button>
+          {!currentAccount ? (
+            <button
+              onClick={connectWallet}
+              className="w-[15rem] text-xl font-semibold bg-gradient-to-r text-transparent bg-clip-text from-[#FD42FB] via-[#CD9ECD] to-[#753FF3]  mt-14 bg-inherit border-gray-400 py-3 rounded-md border hover:scale-105 transition-all ease-in-out"
+            >
+              Connect Wallet
+            </button>
+          ) : (
+            <>
+              <div className="w-[15rem] flex items-center justify-center text-xl font-semibold bg-gradient-to-r text-transparent bg-clip-text from-[#FD42FB] via-[#CD9ECD] to-[#753FF3]  mt-14 bg-inherit border-gray-400 py-3 rounded-md border ">
+                Connected
+              </div>
+
+              <p className="text-gray-400 mt-5">
+                Wallet is{" "}
+                <span className="text-white font-semibold">Connected</span> ,
+                Check the balance table below 👇
+              </p>
+            </>
+          )}
         </div>
         <div className="flex-[0.55]">
           <img src={headerImg} className="w-[37rem]" />

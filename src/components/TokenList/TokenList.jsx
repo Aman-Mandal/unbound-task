@@ -2,9 +2,10 @@ import React, { useContext, useState } from "react";
 import TokenItem from "../TokenItem/TokenItem";
 import ReactPaginate from "react-paginate";
 import { WalletContext } from "../../context/Context";
+import Loader from "../Loader/Loader";
 
 const TokenList = () => {
-  const { tokenBalance } = useContext(WalletContext);
+  const { tokenBalance, isLoading } = useContext(WalletContext);
 
   const [pageNumber, setPageNumber] = useState(0);
   const tokensPerPage = 7;
@@ -35,7 +36,9 @@ const TokenList = () => {
           <p>Balance</p>
         </div>
 
-        {displayTokens}
+        {isLoading && <Loader />}
+
+        {!isLoading && displayTokens}
         <ReactPaginate
           previousLabel={"Prev"}
           nextLabel={"Next"}

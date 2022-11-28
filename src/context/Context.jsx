@@ -16,6 +16,7 @@ const alchemy = new Alchemy(config);
 const WalletContextProvider = ({ children }) => {
   const [tokenBalance, setTokenBalance] = useState([]);
   const [currentAccount, setCurrentAccount] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   // sorting function
   const sortByHighestBalance = (a, b) => {
@@ -24,6 +25,7 @@ const WalletContextProvider = ({ children }) => {
 
   // fetch data
   const fetchTokens = async () => {
+    setIsLoading(true);
     const response = await fetch(
       " https://gateway.ipfs.io/ipns/tokens.uniswap.org"
     );
@@ -61,6 +63,7 @@ const WalletContextProvider = ({ children }) => {
     // sorting array in descending (highest balance first)
     tokensArray.sort(sortByHighestBalance);
     setTokenBalance(tokensArray);
+    setIsLoading(false);
   };
 
   // connect Wallet
@@ -91,6 +94,7 @@ const WalletContextProvider = ({ children }) => {
     <WalletContext.Provider
       value={{
         currentAccount,
+        isLoading,
         connectWallet,
         tokenBalance,
       }}
