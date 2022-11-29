@@ -1,4 +1,4 @@
-# CryptoBal [Live Project](https://vercel.com/aman-mandal/unbound-task)
+# CryptoBal [Live Project](https://unbound-task.vercel.app/)
 
 An application to check your current token Balances of all the tokens present on Ethereum Chain.
 
